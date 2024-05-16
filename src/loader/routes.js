@@ -1,5 +1,6 @@
-const { authRouter } = require("../entities/auth");
+const { AuthEntity, UserEntity } = require("../entities");
 
 module.exports = (app) => {
-  app.use("/auth", authRouter);
+  app.use("/auth", AuthEntity.authRouter);
+  app.use("/users", UserEntity.userRouter);
 };
