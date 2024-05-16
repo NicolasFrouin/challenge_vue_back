@@ -11,7 +11,11 @@ class AuthService {
     return await Return.from(User.create({ email, password, firstname, lastname, role }), undefined, 201);
   }
 
-  static async refreshAccessToken(data) {
+  static async refreshAccessToken(id, data) {
+    const user = await User.findByPk(id);
+    if (!user) {
+      return Return.error({ message: "User not found", code: 404 }, 404);
+    }
     const accessToken = generateAccessToken(data);
     return Return.success({ accessToken });
   }

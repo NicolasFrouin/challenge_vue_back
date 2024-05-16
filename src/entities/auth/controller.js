@@ -27,7 +27,7 @@ class AuthController {
     const {
       user: { id, email, role },
     } = req;
-    const { code, data } = await AuthService.refreshAccessToken({ id, email, role });
+    const { code, data } = await AuthService.refreshAccessToken(id, { id, email, role });
     return res.status(code).send(data);
   }
 
