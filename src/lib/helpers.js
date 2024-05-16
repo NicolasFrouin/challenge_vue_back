@@ -24,6 +24,26 @@ class Helpers {
     });
     return result;
   }
+
+  /**
+   * Transforms a string into a slug by keeping only url-friendly characters
+   *
+   * @param {string?} value
+   * @param {{ remove?: RegExp, replacement?: string }} options defaults to `{ remove: /[^-_\w]/g, replacement: "-" }`
+   *
+   * @returns {string}
+   */
+  static slugify(value = "", options = { remove: /[^-_\w]/g, replacement: "-" }) {
+    if (!value) return "";
+    return value
+      .trim() // remove leading and trailing spaces
+      .normalize("NFD") // split an accented letter in the base letter and the accent
+      .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
+      .toLowerCase()
+      .replace(options.remove, options.replacement) // remove unwanted characters with the replacement char
+      .replace(new RegExp(`${options.replacement}+`, "g"), options.replacement) // replace multiple replace chars with a single replace char
+      .replace(new RegExp(`^${options.replacement}+|${options.replacement}+$`, "g"), ""); // remove leading and trailing replace chars
+  }
 }
 
 module.exports = Helpers;

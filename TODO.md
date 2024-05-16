@@ -89,13 +89,14 @@ CREATE TABLE products (
 </details>
 
 <details>
-<summary>
+<summary><i class="wip"></i>
   <code>CATEGORY</code> table
 </summary>
 
 ```sql
 CREATE TABLE categories (
   name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
   status INTEGER DEFAULT 0,
 );
@@ -193,5 +194,8 @@ CREATE TABLE deliveries (
   summary > i::before {
     content: '✅';
     font-style: normal;
+  }
+  i.wip::before {
+    content: '🚧';
   }
 </style>
