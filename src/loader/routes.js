@@ -1,1 +1,5 @@
-module.exports = (app) => {}; // eslint-disable-line no-unused-vars
+const { authRouter } = require("../entities/auth");
+
+module.exports = (app) => {
+  app.use("/auth", authRouter);
+};
