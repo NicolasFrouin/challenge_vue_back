@@ -20,6 +20,17 @@
 
 Finish the database schema.
 
+**Every** table has has the following columns :
+
+```sql
+CREATE TABLE table_name (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP,
+);
+```
+
 <details>
 <summary><i></i>
   <code>USER</code> table
