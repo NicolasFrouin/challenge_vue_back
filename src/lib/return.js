@@ -35,7 +35,7 @@ class Return {
   }
 
   /**
-   * Returns {@link Return.data|`this.data`} if there is no error, otherwise returns {@link Return.error|`this.error`}
+   * Returns {@link Return.data|`this.data`} if there is no error, otherwise returns {@link Return.error|`this.error`} and {@link Return.errors|`this.errors`}
    *
    * When in development mode, the error stack is also returned
    *
