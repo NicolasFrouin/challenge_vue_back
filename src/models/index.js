@@ -50,3 +50,4 @@ db.Sequelize = Sequelize;
 module.exports = db;
 
 exports.User = require("./user").User;
+exports.Category = require("./category").Category;
