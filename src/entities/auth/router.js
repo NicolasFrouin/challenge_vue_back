@@ -7,8 +7,8 @@ class AuthRouter {
 
     router.route("/login").post(AuthController.login);
     router.route("/register").post(AuthController.register);
-    router.use(authJwtMiddleware()).route("/refresh").post(AuthController.refresh);
-    router.use(authJwtMiddleware()).route("/me").get(AuthController.me);
+    router.route("/refresh").post(authJwtMiddleware(), AuthController.refresh);
+    router.route("/me").get(authJwtMiddleware(), AuthController.me);
 
     return router;
   }

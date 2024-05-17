@@ -9,12 +9,12 @@ class UserRouter {
     const userAuth = authJwtMiddleware();
     const adminAuth = authJwtMiddleware(ROLES.admin);
 
-    router.use(userAuth).route("/info").get(UserController.getUserInfo);
-    router.use(adminAuth).route("/:id").get(UserController.getUser);
-    router.use(adminAuth).route("/:id").delete(UserController.deleteUser);
-    router.use(userAuth).route("/").patch(UserController.updateUser);
-    router.use(adminAuth).route("/").get(UserController.getUsers);
-    router.use(adminAuth).route("/").post(UserController.createUser);
+    router.route("/info").get(userAuth, UserController.getUserInfo);
+    router.route("/:id").get(adminAuth, UserController.getUser);
+    router.route("/:id").delete(adminAuth, UserController.deleteUser);
+    router.route("/").patch(userAuth, UserController.updateUser);
+    router.route("/").get(adminAuth, UserController.getUsers);
+    router.route("/").post(adminAuth, UserController.createUser);
 
     return router;
   }
