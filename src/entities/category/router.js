@@ -1,5 +1,5 @@
 const { ROLES } = require("../../../config");
-const { authJwtMiddleware } = require("../../loader/authentication");
+const { authJwtMiddleware } = require("../../lib/authentication");
 const CategoryController = require("./controller");
 
 class CategoryRouter {

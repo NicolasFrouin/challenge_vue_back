@@ -1,5 +1,5 @@
 const { Return } = require("../../lib");
-const { generateAccessToken } = require("../../loader/authentication");
+const { generateAccessToken } = require("../../lib/authentication");
 const { User } = require("../../models");
 
 class AuthService {

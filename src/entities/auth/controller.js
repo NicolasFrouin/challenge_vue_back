@@ -1,5 +1,5 @@
 const { checkProps } = require("../../lib/helpers");
-const { generateAccessToken, generateRefreshToken } = require("../../loader/authentication");
+const { generateAccessToken, generateRefreshToken } = require("../../lib/authentication");
 const AuthService = require("./service");
 
 class AuthController {

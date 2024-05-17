@@ -1,4 +1,4 @@
-const { authJwtMiddleware } = require("../../loader/authentication");
+const { authJwtMiddleware } = require("../../lib/authentication");
 const AuthController = require("./controller");
 
 class AuthRouter {
