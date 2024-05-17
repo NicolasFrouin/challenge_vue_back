@@ -7,33 +7,39 @@ module.exports = (sequelize, DataTypes) => {
     static async create(category = undefined, options = undefined) {
       if (category && category.name) {
         category.name = category.name.trim();
-        let slug = (category.slug = slugify(category.name));
-        let count = 0;
-        let exists = true;
-
-        const categoriesWithSameSlug = await this.findAll({ where: { slug: { [Op.like]: `${slug}%` } } });
-
-        do {
-          const existing = categoriesWithSameSlug.find((c) => c.slug === slug);
-          if (!existing) {
-            exists = false;
-            break;
-          } else {
-            count++;
-            slug = `${category.slug}-${count}`;
-          }
-        } while (exists);
-
-        category.slug = slug;
+        category.slug = await this.setSlug(category.name);
       }
       return super.create(category, { returing: true, ...options });
     }
 
     static async update(category = undefined, options = undefined) {
       if (category && category.name) {
-        category.slug = slugify(category.name);
+        category.name = category.name.trim();
+        category.slug = await this.setSlug(category.name);
       }
       return super.update(category, { returing: true, ...options });
+    }
+
+    static async setSlug(from) {
+      let baseSlug = slugify(from);
+      let slug = baseSlug;
+      let count = 0;
+      let exists = true;
+
+      const categoriesWithSameSlug = await this.findAll({ where: { slug: { [Op.like]: `${baseSlug}%` } } });
+
+      do {
+        const existing = categoriesWithSameSlug.find((c) => c.slug === slug);
+        if (!existing) {
+          exists = false;
+          break;
+        } else {
+          count++;
+          slug = `${baseSlug}-${count}`;
+        }
+      } while (exists);
+
+      return slug;
     }
 
     static async findBySlug(slug) {
