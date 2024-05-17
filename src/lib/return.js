@@ -115,7 +115,7 @@ class Return {
    */
   setError(error) {
     this.error = error;
-    this.addError(this.error);
+    this._errors.push(this.error);
     return this;
   }
 
