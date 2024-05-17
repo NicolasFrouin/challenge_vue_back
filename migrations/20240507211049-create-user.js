@@ -10,6 +10,6 @@ module.exports = {
   },
   async down(queryInterface) {
     await queryInterface.sequelize.query("DROP EXTENSION IF EXISTS pgcrypto;");
-    await queryInterface.dropTable(User.tableName);
+    await queryInterface.dropTable(User.tableName, { cascade: true });
   },
 };
