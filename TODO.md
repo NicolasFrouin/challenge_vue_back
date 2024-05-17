@@ -89,7 +89,7 @@ CREATE TABLE products (
 </details>
 
 <details>
-<summary><i class="wip"></i>
+<summary><i></i>
   <code>CATEGORY</code> table
 </summary>
 
