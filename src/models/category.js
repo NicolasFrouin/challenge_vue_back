@@ -4,6 +4,9 @@ const BaseModel = require("./_base");
 
 module.exports = (sequelize, DataTypes) => {
   class Category extends BaseModel {
+    static STATUS_DRAFT = 0;
+    static STATUS_PUBLISHED = 1;
+
     static async create(category = undefined, options = undefined) {
       if (category && category.name) {
         category.name = category.name.trim();
