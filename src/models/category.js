@@ -49,7 +49,9 @@ module.exports = (sequelize, DataTypes) => {
       return await this.findOne({ where: { slug } });
     }
 
-    static associate(models) {} // eslint-disable-line
+    static associate(models) {
+      this.hasMany(models.Product, { foreignKey: "category_id" });
+    }
 
     static init() {
       super.init(this.model(), { sequelize, underscored: true });
@@ -97,6 +99,8 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Category.init();
+
+  Category.Products = Category.hasMany(Category, { foreignKey: "category_id" });
 
   exports.Category = Category;
 

@@ -75,10 +75,11 @@ CREATE TABLE addresses (
 ```sql
 CREATE TABLE products (
   name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
   price DECIMAL(10, 2),
   tax DECIMAL(10, 2),
-  stock INTEGER,
+  stock_real INTEGER,
   stock_virtual INTEGER,
   image VARCHAR(255),
   alert INTEGER,

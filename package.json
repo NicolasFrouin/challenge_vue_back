@@ -21,6 +21,9 @@
     "seed:one": "sequelize-cli db:seed",
     "unseed": "sequelize-cli db:seed:undo:all",
     "unseed:one": "sequelize-cli db:seed:undo",
+    "reload:db": "npm run db:drop && npm run db:create",
+    "reload:migrate": "npm run reload:db && npm run migrate:up",
+    "reload:all": "npm run db:drop && npm run db:create && npm run migrate:up && npm run seed",
     "prepare": "husky install"
   },
   "pre-commit": [
