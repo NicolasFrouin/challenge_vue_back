@@ -1,1 +1,4 @@
-exports.mongodb = require("./mongodb.service");
+exports.mongodb = {
+  connection: require("./mongodb").mongodb,
+  // models: require("./mongodb").models,
+};

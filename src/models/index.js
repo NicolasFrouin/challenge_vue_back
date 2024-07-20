@@ -52,3 +52,5 @@ module.exports = db;
 exports.User = require("./user").User;
 exports.Category = require("./category").Category;
 exports.Product = require("./product").Product;
+exports.Order = require("./order").Order;
+exports.OrderLine = require("./orderLine").OrderLine;

@@ -40,6 +40,13 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(jsonParser);
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 routeLoader(app);
 
 app.use("/", (req, res) => {

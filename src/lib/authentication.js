@@ -4,7 +4,7 @@ const { ROLES } = require("../../config");
 /**
  * Middleware to authenticate JWT token and check user role
  *
- * @param {string} role Role to authenticate - defaults to {@link ROLES.user}
+ * @param {string} minRole Minimum role to authenticate - defaults to {@link ROLES.user}
  *
  * @returns {function} Middleware authentication function
  *
@@ -27,13 +27,29 @@ const { ROLES } = require("../../config");
  *  res.send("Hello admin");
  * }
  */
-exports.authJwtMiddleware = (role = ROLES.user) => {
+exports.authJwtMiddleware = (minRole = ROLES.user) => {
   return (req, res, next) => {
     if (process.env.NODE_ENV === "development") {
       const result = {};
 
       const authHeader = req.headers["authorization"];
-      const token = authHeader && authHeader.split(" ")[1];
+      console.log("authHeader", authHeader);
+      if (!authHeader) {
+        result.error = "No authorization header provided";
+        result.code = 401;
+        console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+        return next();
+      }
+      const authArray = authHeader.split(" ");
+      console.log("authArray", authArray);
+      if (authArray.length !== 2 || authArray[0] !== "Bearer") {
+        result.error = "Invalid authorization header";
+        result.code = 401;
+        console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+        return next();
+      }
+      const token = authArray[1];
+      console.log("token", token);
       if (!token) {
         result.error = "No token provided";
         result.code = 401;
@@ -42,14 +58,14 @@ exports.authJwtMiddleware = (role = ROLES.user) => {
       }
 
       if (!result.error) {
-        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
           if (err) {
             result.error = "Invalid token";
             result.code = 401;
             console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
             return next();
           }
-          if (role !== ROLES.user && user.role !== role) {
+          if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) {
             result.error = "Unauthorized";
             result.code = 403;
             console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
@@ -61,12 +77,15 @@ exports.authJwtMiddleware = (role = ROLES.user) => {
       }
     } else {
       const authHeader = req.headers["authorization"];
-      const token = authHeader && authHeader.split(" ")[1];
+      if (!authHeader) return res.sendStatus(401);
+      const authArray = authHeader.split(" ");
+      if (authArray.length !== 2 || authArray[0] !== "Bearer") return res.sendStatus(401);
+      const token = authArray[1];
       if (!token) return res.sendStatus(401);
 
-      jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) return res.sendStatus(401);
-        if (role !== ROLES.user && user.role !== role) return res.sendStatus(403);
+        if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) return res.sendStatus(403);
         req.user = user;
         next();
       });
@@ -82,7 +101,7 @@ exports.authJwtMiddleware = (role = ROLES.user) => {
  * @returns {string} JWT token
  */
 exports.generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 };
 
 /**

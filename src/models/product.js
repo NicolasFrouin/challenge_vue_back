@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      this.belongsTo(models.Category, { foreignKey: "category_id" });
+      this.belongsTo(models.Category, { foreignKey: "category_id", targetKey: "id" });
     }
 
     static init() {
@@ -138,9 +138,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         status: {
           type: DataTypes.INTEGER,
-          defaultValue: 0,
+          defaultValue: this.STATUS_DRAFT,
           validate: {
-            min: 0,
+            isIn: [[this.STATUS_DRAFT, this.STATUS_PUBLISHED]],
           },
         },
       };

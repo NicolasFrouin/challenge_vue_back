@@ -1,9 +1,14 @@
-const mongodb = require("mongoose");
+const mongoose = require("mongoose");
 
 const { MONGO_URL: url, DB_NAME: database } = process.env;
 
-mongodb
-  .connect(`${url}/${database}`)
+console.log(`Connecting to mongodb at ${url}/${database}`);
+
+mongoose
+  .connect(`${url}/${database}`, {
+    auth: { username: "root", password: "root" },
+    authSource: "admin",
+  })
   .then(() => {
     console.log("Mongodb connection has been established successfully.");
   })
@@ -11,4 +16,4 @@ mongodb
     throw new Error(`Unable to connect to the mongodb database: ${error}`);
   });
 
-module.exports = mongodb;
+module.exports = mongoose.connection;

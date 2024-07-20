@@ -1,13 +1,15 @@
 const { Return } = require("../../lib");
-const { Category } = require("../../models");
+const { Category, Product } = require("../../models");
 
 class CategoryService {
   static async getAllCategories() {
-    return Return.from(Category.findAll());
+    return Return.from(
+      Category.findAll({ include: [{ model: Product, where: { status: Product.STATUS_PUBLISHED } }] }),
+    );
   }
 
   static async getCategoryById(id) {
-    return Return.from(Category.findByPk(id));
+    return Return.from(Category.findOne({ slug: id }));
   }
 
   static async createCategory(data) {

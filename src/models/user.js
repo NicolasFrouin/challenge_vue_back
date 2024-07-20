@@ -17,9 +17,10 @@ module.exports = (sequelize, DataTypes) => {
      * @returns {Promise<Return>}
      */
     static async login(email, password) {
-      return await Return.from(
-        this.findOne({ where: { email, password: this.hash(password, this.sequelize.col("password")) } }),
-      );
+      const user = (
+        await this.findOne({ where: { email, password: this.hash(password, this.sequelize.col("password")) } })
+      ).toJSON();
+      return (await Return.from(user, 404)).data;
     }
 
     static async create(user = undefined, options = undefined) {
