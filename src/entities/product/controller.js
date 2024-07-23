@@ -7,6 +7,11 @@ class ProductController {
     return res.status(code).json(data);
   }
 
+  static async getProductBySlug(req, res) {
+    const { code, data } = await ProductService.getProductBySlug(req.params.slug);
+    return res.status(code).json(data);
+  }
+
   static async getProductById(req, res) {
     const { code, data } = await ProductService.getProductById(req.params.id);
     return res.status(code).json(data);
@@ -22,8 +27,16 @@ class ProductController {
   }
 
   static async updateProduct(req, res) {
-    const { name, description, status } = req.body;
-    const { code, data } = await ProductService.updateProduct(req.params.id, { name, description, status });
+    const { name, description, status, alert, stockReal, stockVirtual, tax } = req.body;
+    const { code, data } = await ProductService.updateProduct(req.params.id, {
+      name,
+      description,
+      status,
+      alert,
+      stockReal,
+      stockVirtual,
+      tax,
+    });
     return res.status(code).json(data);
   }
 

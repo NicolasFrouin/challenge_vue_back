@@ -35,9 +35,12 @@ class ProductService {
     return Return.from(Product.findAll({ where, order, include: [{ model: Category, where: categoryWhere }] }));
   }
 
+  static async getProductBySlug(slug) {
+    return Return.from(Product.findOne({ slug }));
+  }
+
   static async getProductById(id) {
-    // return Return.from(Product.findByPk(id));
-    return Return.from(Product.findOne({ slug: id }));
+    return Return.from(Product.findByPk(id));
   }
 
   static async createProduct(data) {

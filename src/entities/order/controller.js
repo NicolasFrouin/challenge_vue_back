@@ -1,4 +1,3 @@
-const { checkProps } = require("../../lib/helpers");
 const OrderService = require("./service");
 
 class OrderController {
@@ -13,11 +12,8 @@ class OrderController {
   }
 
   static async createOrder(req, res) {
-    const check = checkProps(req.body, ["name"]);
-    if (!check.ok) return res.status(check.code).json(check.data);
-
-    const { name, description } = req.body;
-    const { code, data } = await OrderService.createOrder({ name, description });
+    const { products } = req.body;
+    const { code, data } = await OrderService.createOrder(req.user, products);
     return res.status(code).json(data);
   }
 }

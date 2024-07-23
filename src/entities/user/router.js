@@ -12,7 +12,7 @@ class UserRouter {
     router.route("/info").get(userAuth, UserController.getUserInfo);
     router.route("/:id").get(adminAuth, UserController.getUser);
     router.route("/:id").delete(adminAuth, UserController.deleteUser);
-    router.route("/").patch(userAuth, UserController.updateUser);
+    router.route("/:id").patch(adminAuth, UserController.updateUser);
     router.route("/").get(adminAuth, UserController.getUsers);
     router.route("/").post(adminAuth, UserController.createUser);
 

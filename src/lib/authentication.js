@@ -83,7 +83,7 @@ exports.authJwtMiddleware = (minRole = ROLES.user) => {
     const authHeader = req.headers["authorization"];
     if (!authHeader) return res.sendStatus(401);
     const authArray = authHeader.split(" ");
-    console.log({ authArray });
+    // console.log({ authArray });
     if (authArray.length !== 2 || authArray[0] !== "Bearer") return res.sendStatus(401);
     const token = authArray[1];
     if (!token) return res.sendStatus(401);

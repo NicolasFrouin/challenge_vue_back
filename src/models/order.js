@@ -1,6 +1,6 @@
 const { mongodb } = require("../database");
 const BaseModel = require("./_base");
-const { OrderLine } = require("./orderLine");
+const { OrderLine } = require("../models");
 
 module.exports = (sequelize, DataTypes) => {
   class Order extends BaseModel {
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       this.belongsTo(models.User, { foreignKey: "user_id" });
+      this.hasMany(models.OrderLine, { foreignKey: "order_id" });
     }
     static async aze() {
       return { foo: "bar" };
@@ -41,15 +42,18 @@ module.exports = (sequelize, DataTypes) => {
         underscored: true,
         hooks: {
           afterUpdate: async (instance /* options */) => {
-            const deletion = mongodb.models.mongoOrder.deleteOne({ _id: instance.id });
-            const mongoOrderData = instance.getFullData();
-            Promise.all([deletion, mongoOrderData]).then(async (_, mongoOrderData) => {
-              mongodb.models.mongoOrder.create(mongoOrderData);
-            });
+            console.log({ instance, mongodb });
+            // const deletion = mongodb.models.mongoOrder.deleteOne({ _id: instance.id });
+            // const mongoOrderData = instance.getFullData();
+            // Promise.allSettled([deletion, mongoOrderData]).then(async (_, mongoOrderData) => {
+            //   mongodb.models.mongoOrder.create(mongoOrderData);
+            // });
           },
-          afterCreate: async (instance /* options */) => {
-            const mongoOrderData = instance.getFullData();
-            mongodb.models.mongoOrder.create(mongoOrderData);
+          afterCreate: async (/* instance */
+          /* options */) => {
+            console.log("afterCreate");
+            //   const mongoOrderData = instance.getFullData();
+            //   mongodb.models.mongoOrder.create(mongoOrderData);
           },
           afterDestroy: async (instance /* options */) => {
             mongodb.models.mongoOrder.deleteOne({ _id: instance.id });

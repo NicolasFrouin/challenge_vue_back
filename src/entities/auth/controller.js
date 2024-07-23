@@ -4,7 +4,7 @@ const AuthService = require("./service");
 
 class AuthController {
   static async login(req, res) {
-    console.log("AuthController -> login -> req.body", req.body);
+    // console.log("AuthController -> login -> req.body", req.body);
     const check = checkProps(req.body, ["email", "password"]);
     if (!check.ok) return res.status(check.code).send(check.data);
 
@@ -15,7 +15,7 @@ class AuthController {
     data.accessToken = generateAccessToken(tokenData);
     data.refreshToken = generateRefreshToken(tokenData);
 
-    console.log("AuthController -> login -> data", data);
+    // console.log("AuthController -> login -> data", data);
 
     return res.status(code).send(data);
   }

@@ -31,14 +31,11 @@ class UserController {
   }
 
   static async updateUser(req, res) {
-    const {
-      user: { id },
-      params: { firstname, lastname },
-    } = req;
+    const { firstname, lastname } = req.body;
     const updateData = {};
     if (firstname) updateData.firstname = firstname;
     if (lastname) updateData.lastname = lastname;
-    const { code, data } = await UserService.updateUser(id, updateData);
+    const { code, data } = await UserService.updateUser(req.params.id, updateData);
     return res.status(code).send(data);
   }
 
