@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { ROLES } = require("../../config");
+const { User } = require("../models");
 
 /**
  * Middleware to authenticate JWT token and check user role
@@ -29,67 +30,74 @@ const { ROLES } = require("../../config");
  */
 exports.authJwtMiddleware = (minRole = ROLES.user) => {
   return (req, res, next) => {
-    if (process.env.NODE_ENV === "development") {
-      const result = {};
+    // if (process.env.NODE_ENV === "development") {
+    //   const result = {};
 
-      const authHeader = req.headers["authorization"];
-      console.log("authHeader", authHeader);
-      if (!authHeader) {
-        result.error = "No authorization header provided";
-        result.code = 401;
-        console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
-        return next();
-      }
-      const authArray = authHeader.split(" ");
-      console.log("authArray", authArray);
-      if (authArray.length !== 2 || authArray[0] !== "Bearer") {
-        result.error = "Invalid authorization header";
-        result.code = 401;
-        console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
-        return next();
-      }
-      const token = authArray[1];
-      console.log("token", token);
-      if (!token) {
-        result.error = "No token provided";
-        result.code = 401;
-        console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
-        return next();
-      }
+    //   const authHeader = req.headers["authorization"];
+    //   console.log("authHeader", authHeader);
+    //   if (!authHeader) {
+    //     result.error = "No authorization header provided";
+    //     result.code = 401;
+    //     console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+    //     return next();
+    //   }
+    //   const authArray = authHeader.split(" ");
+    //   console.log("authArray", authArray);
+    //   if (authArray.length !== 2 || authArray[0] !== "Bearer") {
+    //     result.error = "Invalid authorization header";
+    //     result.code = 401;
+    //     console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+    //     return next();
+    //   }
+    //   const token = authArray[1];
+    //   console.log("token", token);
+    //   if (!token) {
+    //     result.error = "No token provided";
+    //     result.code = 401;
+    //     console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+    //     return next();
+    //   }
 
-      if (!result.error) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-          if (err) {
-            result.error = "Invalid token";
-            result.code = 401;
-            console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
-            return next();
-          }
-          if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) {
-            result.error = "Unauthorized";
-            result.code = 403;
-            console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
-            return next();
-          }
-          req.user = user;
-          return next();
-        });
-      }
-    } else {
-      const authHeader = req.headers["authorization"];
-      if (!authHeader) return res.sendStatus(401);
-      const authArray = authHeader.split(" ");
-      if (authArray.length !== 2 || authArray[0] !== "Bearer") return res.sendStatus(401);
-      const token = authArray[1];
-      if (!token) return res.sendStatus(401);
+    //   if (!result.error) {
+    //     jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
+    //       if (err) {
+    //         result.error = "Invalid token";
+    //         result.code = 401;
+    //         console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+    //         return next();
+    //       }
+    //       const dbUser = await User.findByPk(user.id);
+    //       if (!dbUser) return res.sendStatus(401);
+    //       if (dbUser.email !== user.email || dbUser.role !== user.role) return res.sendStatus(401);
+    //       if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) {
+    //         result.error = "Unauthorized";
+    //         result.code = 403;
+    //         console.log("\x1b[31m%d\x1b[0m - \x1b[34m%s\x1b[0m", result.code, result.error);
+    //         return next();
+    //       }
+    //       req.user = user;
+    //       return next();
+    //     });
+    //   }
+    // } else {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader) return res.sendStatus(401);
+    const authArray = authHeader.split(" ");
+    console.log({ authArray });
+    if (authArray.length !== 2 || authArray[0] !== "Bearer") return res.sendStatus(401);
+    const token = authArray[1];
+    if (!token) return res.sendStatus(401);
 
-      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(401);
-        if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) return res.sendStatus(403);
-        req.user = user;
-        next();
-      });
-    }
+    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
+      if (err) return res.sendStatus(401);
+      const dbUser = await User.findByPk(user.id);
+      if (!dbUser) return res.sendStatus(401);
+      if (dbUser.email !== user.email || dbUser.role !== user.role) return res.sendStatus(401);
+      if (minRole !== ROLES.user && Number(user.role) < Number(minRole)) return res.sendStatus(403);
+      req.user = user;
+      next();
+    });
+    // }
   };
 };
 

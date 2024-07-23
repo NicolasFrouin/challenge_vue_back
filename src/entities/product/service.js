@@ -32,7 +32,6 @@ class ProductService {
       default:
         order = [["id", "ASC"]];
     }
-    console.log({ where, order, productSort, query: req.query });
     return Return.from(Product.findAll({ where, order, include: [{ model: Category, where: categoryWhere }] }));
   }
 
