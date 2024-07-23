@@ -10,7 +10,9 @@ services:
     working_dir: /app
     environment:
       - DB_HOST=db
-      - MONGO_URL=mongodb://mongo
+      - MONGO_URL=mongodb://root:root@mongo:27017/mydb
+      - APP_ENV=${APP_ENV}
+      - APP_PORT=${APP_PORT}
     depends_on:
       - db
       - mongo
