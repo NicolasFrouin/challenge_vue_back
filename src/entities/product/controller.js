@@ -7,6 +7,11 @@ class ProductController {
     return res.status(code).json(data);
   }
 
+  static async getAllProductsAdmin(req, res) {
+    const { code, data } = await ProductService.getAllProductsAdmin(req);
+    return res.status(code).json(data);
+  }
+
   static async getProductBySlug(req, res) {
     const { code, data } = await ProductService.getProductBySlug(req.params.slug);
     return res.status(code).json(data);
@@ -20,9 +25,7 @@ class ProductController {
   static async createProduct(req, res) {
     const check = checkProps(req.body, ["name"]);
     if (!check.ok) return res.status(check.code).json(check.data);
-
-    const { name, description } = req.body;
-    const { code, data } = await ProductService.createProduct({ name, description });
+    const { code, data } = await ProductService.createProduct(req.body);
     return res.status(code).json(data);
   }
 

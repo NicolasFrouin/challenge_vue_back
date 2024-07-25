@@ -47,6 +47,11 @@ class UserController {
     const { code, data } = await UserService.deleteUser(id);
     return res.status(code).send(data);
   }
+
+  static async getDashboardUsers(req, res) {
+    const { code, data } = await UserService.getDashboardUsers();
+    return res.status(code).send(data);
+  }
 }
 
 module.exports = UserController;

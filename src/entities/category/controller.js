@@ -7,8 +7,18 @@ class CategoryController {
     return res.status(code).json(data);
   }
 
+  static async getAllCategoriesAdmin(req, res) {
+    const { code, data } = await CategoryService.getAllCategoriesAdmin();
+    return res.status(code).json(data);
+  }
+
   static async getCategoryById(req, res) {
     const { code, data } = await CategoryService.getCategoryById(req.params.id);
+    return res.status(code).json(data);
+  }
+
+  static async getCategoryBySlug(req, res) {
+    const { code, data } = await CategoryService.getCategoryBySlug(req.params.slug);
     return res.status(code).json(data);
   }
 
@@ -29,6 +39,11 @@ class CategoryController {
 
   static async deleteCategory(req, res) {
     const { code, data } = await CategoryService.deleteCategory(req.params.id);
+    return res.status(code).json(data);
+  }
+
+  static async getSellsByCategoryByYear(req, res) {
+    const { code, data } = await CategoryService.getSellsByCategoryByYear();
     return res.status(code).json(data);
   }
 }

@@ -58,7 +58,15 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static init() {
-      super.init(this.model(), { sequelize, underscored: true });
+      super.init(this.model(), {
+        sequelize,
+        underscored: true,
+        hooks: {
+          afterUpdate: async (instance /* options */) => {
+            console.log("Product updated", instance);
+          },
+        },
+      });
     }
 
     static schema() {

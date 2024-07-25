@@ -89,6 +89,7 @@ class Return {
         error = null;
         break;
     }
+    if (this.code !== errorCode) this.code = errorCode;
     if (!this._error) this._error = new RestError(errorCode, errorMessage);
   }
 

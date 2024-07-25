@@ -11,23 +11,18 @@ const mongoProductSchema = new Schema({
   status: { type: String, required: false },
 });
 
-const mongoOrderLineSchema = new Schema({
-  id: { type: String, required: false },
-  product: mongoProductSchema,
-  Product: mongoProductSchema,
-  quantity: { type: Number, required: false },
-  total: { type: Number, required: false },
-});
-
-const mongoOrderSchema = new Schema({
+const mongoCategorySchema = new Schema({
   id: { type: String, required: true },
-  userId: { type: String, required: false },
-  lines: [mongoOrderLineSchema],
-  total: { type: Number, required: false },
+  name: { type: String, required: false },
+  slug: { type: String, required: false },
+  description: { type: String, required: false },
+  products: [mongoProductSchema],
+  Products: [mongoProductSchema],
   status: { type: String, required: false },
   createdAt: { type: Date, required: false },
+  updatedAt: { type: Date, required: false },
 });
 
-const mongoOrder = db.model("Order", mongoOrderSchema);
+const mongoCategory = db.model("Category", mongoCategorySchema);
 
-module.exports = mongoOrder;
+module.exports = mongoCategory;

@@ -9,6 +9,7 @@ class UserRouter {
     const userAuth = authJwtMiddleware();
     const adminAuth = authJwtMiddleware(ROLES.admin);
 
+    router.route("/admin/dashboard").get(adminAuth, UserController.getDashboardUsers);
     router.route("/info").get(userAuth, UserController.getUserInfo);
     router.route("/:id").get(adminAuth, UserController.getUser);
     router.route("/:id").delete(adminAuth, UserController.deleteUser);
