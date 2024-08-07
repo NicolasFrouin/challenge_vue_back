@@ -14,7 +14,7 @@ describe('Category Model Test', () => {
 
   it('should have no categories initially', async () => {
     const categories = await Category.find();
-    console.log('Nombre de catégories initialement:', categories.length);
+    console.log('Nombre de catégories initialement :', categories.length);
     expect(categories.length).toBe(0);
   }, 30000);
 
