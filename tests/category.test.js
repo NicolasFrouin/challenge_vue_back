@@ -4,7 +4,7 @@ const Category = require('../src/database/mongodb/models/category');
 describe('Category Model Test', () => {
   beforeAll(async () => {
     await Category.deleteMany({});
-    console.log("Base de données nettoyée pour les tests de catégorie (beforeAll)");
+    console.log("Base de données nettoyée pour les tests de catégorie  (beforeAll)");
   }, 30000);
 
   beforeEach(async () => {
